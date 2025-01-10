@@ -7,6 +7,6 @@ export default class CalendarService {
      * @param {null|number|number[]} projectId
      */
     get(startAt, endAt, projectId = null) {
-        return axios.get('tasks/calendar', { params: { start_at: startAt, end_at: endAt, project_id: projectId } });
+        return axios.post('tasks/calendar', { start_at: startAt, end_at: endAt, project_id: projectId });
     }
 }
