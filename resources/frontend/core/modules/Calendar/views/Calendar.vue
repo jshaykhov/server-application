@@ -45,6 +45,7 @@
     import CalendarView from '../components/CalendarView.vue';
     import TasksModal from '../components/TasksModal.vue';
     import CalendarService from '../services/calendar.service';
+    import { debounce } from 'lodash';
 
     const ISO8601_DATE_FORMAT = 'YYYY-MM-DD';
 
@@ -75,6 +76,7 @@
         },
         created() {
             this.service = new CalendarService();
+            this.load = debounce(this.load, 300);
             this.load();
         },
         methods: {
