@@ -83,6 +83,20 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure gd \
     && docker-php-ext-install gd pdo pdo_mysql
 
+# Указываем рабочую директорию (где будет Laravel)
+WORKDIR /var/www
+
+# Копируем ВСЁ приложение внутрь контейнера
+COPY . .
+
+# Устанавливаем зависимости Laravel (если их ещё нет)
+RUN composer install --no-dev --optimize-autoloader
+
+# Генерируем ключ приложения
+RUN php artisan key:generate
+
+# Даем права на запись в storage и bootstrap/cache
+RUN chmod -R 777 storage bootstrap/cache
 # VOLUME /app/storage
 
 #HEALTHCHECK --interval=5m --timeout=10s \
