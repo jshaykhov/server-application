@@ -73,7 +73,7 @@ COPY --chown=root:root .root-fs /
 
 FROM php:8.1-fpm
 
-# Установка зависимостей
+# Устанавливаем зависимости
 RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
@@ -84,12 +84,13 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install gd pdo pdo_mysql
 
 # Указываем рабочую директорию (где будет Laravel)
-WORKDIR /var/www
+WORKDIR /app
 
 # Копируем ВСЁ приложение внутрь контейнера
 COPY . .
 
-# Устанавливаем зависимости Laravel (если их ещё нет)
+# Устанавливаем зависимости Laravel
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN composer install --no-dev --optimize-autoloader
 
 # Генерируем ключ приложения
