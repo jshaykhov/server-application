@@ -71,6 +71,18 @@ COPY --from=builder /app /app
 
 COPY --chown=root:root .root-fs /
 
+FROM php:8.1-fpm
+
+# Установка зависимостей
+RUN apt-get update && apt-get install -y \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    zip \
+    git \
+    && docker-php-ext-configure gd \
+    && docker-php-ext-install gd pdo pdo_mysql
+
 # VOLUME /app/storage
 
 #HEALTHCHECK --interval=5m --timeout=10s \
